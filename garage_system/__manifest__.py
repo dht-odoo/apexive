@@ -1,0 +1,42 @@
+# -*- coding: utf-8 -*-
+{
+    'name' : 'Garage System',
+    'version' : '16.0.1.0.0',
+    'summary': 'Garage System',
+    'sequence': 100,
+    'description': """The Garage System is a comprehensive software solution for automotive workshops,
+                    offering features such as job card management, inventory control, and financial 
+                    transactions. It streamlines operations, enhances communication, and provides insights 
+                    for mechanics, sales, and managerial staff.""",
+    'author': 'Dhvanil Trivedi',
+    'maintainer': 'Dhvanil Trivedi',
+    'category': 'Productivity',
+    'images' : [],
+    'depends' : ['account', 'fleet', 'l10n_ae', 'purchase', 'sale', 'sale_stock', 'stock'],
+    'data': [
+        'security/ir.model.access.csv',
+        'security/security.xml',
+        'views/account_move_views.xml',
+        'views/fleet_vehicle_views.xml',
+        'views/job_card_views.xml',
+        'views/job_card_worksheet_views.xml',
+        'views/main_code.xml',
+        'views/product_template_views.xml',
+        'views/purchase_order_views.xml',
+        'views/res_partner_views.xml',
+        'views/res_users_views.xml',
+        'views/sale_order_view.xml',
+        'views/stock_picking_views.xml',
+        'report/fts_report_templates.xml',
+        'report/fts_report.xml',
+        'report/jobcard_report_templates.xml',
+        'report/saleorder_report_templates.xml',
+    ],
+    'demo': [],
+    'installable':True,
+    'application':True,
+    'auto_install':False,
+    'license': 'LGPL-3',
+
+    'images':[],
+}

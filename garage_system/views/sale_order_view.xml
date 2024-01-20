@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherits sale order form view -->
+    <record id="sale_order_view_form" model="ir.ui.view">
+        <field name="name">sale.order.view.form.inherit.garage_system</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <header position="inside">
+                <field name="delivery_count" invisible="1"/>
+                <button name="action_create_job_card" string="Create Job Card" type="object" class="oe_highlight" attrs="{'invisible': [('job_card_id', '!=', False)]}" groups="garage_system.group_job_card_technician"/>
+                <button name="action_create_invoice_and_picking" string="Create Invoice and Picking" type="object" attrs="{'invisible': [('delivery_count', '!=', 0)]}" class="oe_highlight"/>
+            </header>
+            <field name="partner_id" position="after">
+                <field name="job_card_id" groups="garage_system.group_job_card_technician"/>
+                <field name="job_card_id" invisible="1"/>
+                <field name="fleet_id" domain="[('customer_id', '=', partner_id)]"  attrs="{'readonly': ['|', ('partner_id', '=', False), ('state', '!=', 'draft')]}" context="{'default_customer_id': partner_id}" groups="garage_system.group_job_card_technician"/>
+                <field name="fleet_id" domain="[('customer_id', '=', partner_id)]"  attrs="{'readonly': ['|', ('partner_id', '=', False), ('state', '!=', 'draft')]}" context="{'default_customer_id': partner_id}" invisible="1"/>
+                <field name="license_plate" groups="garage_system.group_job_card_technician"/>
+                <field name="license_plate" invisible="1"/>
+                <field name="chassis_number" groups="garage_system.group_job_card_technician"/>
+                <field name="chassis_number" invisible="1"/>
+                <field name="last_odometer" groups="garage_system.group_job_card_technician"/>
+                <field name="last_odometer" invisible="1"/>
+            </field>    
+            <xpath expr="/form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='discount']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="/form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='tax_id']" position="before">
+                <field name="cost"/> 
+                <field name="discount_amt"/> 
+            </xpath>
+            <field name="tax_totals" position="before">
+                <field name="total_discount_amt"/>
+            </field>
+            <field name="payment_term_id" position="after">
+                <field name="fts_payment_type"/>
+                <field name="cost"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Inherits sales search view -->
+    <record id="sale_order_view_search" model="ir.ui.view">
+        <field name="name">sale.order.view.search.inherit.garage_system</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <search position="inside">
+                <field name="license_plate"/>
+                <group expand="1" string="Group By">
+                    <filter name="fts_payment_type" string="Payment Type" context="{'group_by':'fts_payment_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Inherits sale order tree view -->
+    <record id="sale_order_view_tree" model="ir.ui.view">
+        <field name="name">sale.order.view.tree.inherit.garage_system</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="job_card_id" groups="garage_system.group_job_card_technician"/>
+                <field name="job_card_id" invisible="1"/>
+                <field name="license_plate"/>
+            </field>
+            <field name="amount_total" position="before">
+                <field name="cost"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Action --> 
+    <record id="sale_order_action" model="ir.actions.act_window">
+        <field name="name">Sales Order Action</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="domain">[('job_card_id', '!=', False)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a New record!
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_sale_order" 
+            name="Sales" 
+            parent="garage_system.menu_base_job_card" 
+            sequence="30" groups="garage_system.group_fleet_sales_user"/>
+    <menuitem name="Sales Order" 
+            parent="menu_sale_order"
+            id="menu_sale_order_submenu" 
+            sequence="1"
+            action="sale_order_action" groups="garage_system.group_fleet_sales_user"/>
+</odoo>

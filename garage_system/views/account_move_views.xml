@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherits accounts invoice form view -->
+    <record id="account_move_view_form" model="ir.ui.view">
+        <field name="name">account.move.view.form.inherit.garage_system</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="job_card_id" groups="garage_system.group_job_card_technician"/>
+                <field name="job_card_id" invisible="1"/>
+                <field name="fleet_id" domain="[('customer_id', '=', partner_id)]"  attrs="{'readonly': ['|', ('partner_id', '=', False), ('state', '!=', 'draft')]}" context="{'default_customer_id': partner_id}" groups="garage_system.group_job_card_technician"/>
+                <field name="fleet_id" domain="[('customer_id', '=', partner_id)]"  attrs="{'readonly': ['|', ('partner_id', '=', False), ('state', '!=', 'draft')]}" context="{'default_customer_id': partner_id}" invisible="1"/>
+                <field name="license_plate" groups="garage_system.group_job_card_technician"/>
+                <field name="license_plate" invisible="1"/>
+                <field name="chassis_number" groups="garage_system.group_job_card_technician"/>
+                <field name="chassis_number" invisible="1"/>
+                <field name="last_odometer" groups="garage_system.group_job_card_technician"/>
+                <field name="last_odometer" invisible="1"/>
+            </field>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='discount']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="after">
+                <field name="cost"/>
+                <field name="discount_amt"/>
+            </xpath>
+            <field name="tax_totals" position="before">
+                <field name="total_discount_amt"/>
+                <field name="cost"/>
+            </field>
+            <field name="payment_reference" position="after">
+                <field name="fts_payment_type"/>
+                <field name="cost"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Inherits account invoice tree view -->
+    <record id="account_move_view_tree" model="ir.ui.view">
+        <field name="name">account.move.view.tree.inherit.garage_system</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="job_card_id" groups="garage_system.group_job_card_technician"/>
+                <field name="fts_payment_type"/>
+                <field name="job_card_id" invisible="1"/>
+                <field name="license_plate"/>
+            </field>
+            <field name="amount_total_signed" position="before">
+                <field name="cost"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Inherits account supplier payment tree view -->
+    <record id="account_payment_view_tree" model="ir.ui.view">
+        <field name="name">account.payment.view.tree.inherit.garage_system</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_supplier_payment_tree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field name="ref" string="Memo"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Define a search view for the account model with filters and grouping options -->
+    <record id="account_move_view_search" model="ir.ui.view">
+        <field name="name">account.move.view.search.inherit.garage_system</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <search position="inside">
+                <field name="license_plate"/>
+                <group expand="1" string="Group By">
+                    <filter name="fts_payment_type" string="Payment Type" context="{'group_by':'fts_payment_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Define an action for opening the accounts tree and kanban view with search and form views -->
+    <record id="account_move_action" model="ir.actions.act_window">
+        <field name="name">Invoice</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="domain">[('job_card_id', '!=', False)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a record!
+            </p>
+        </field>
+    </record>
+
+    <!-- Menuitems -->
+    <menuitem id="menu_account_move_invoice" 
+            name="Invoice" 
+            parent="garage_system.menu_base_job_card" 
+            sequence="10" groups="garage_system.group_fleet_sales_user"/>
+    <menuitem name="Invoice" parent="menu_account_move_invoice" id="menu_invoice_submenu" sequence="1" action="account.action_move_out_invoice_type" groups="garage_system.group_fleet_sales_user"/>
+</odoo>

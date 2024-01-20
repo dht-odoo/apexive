@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Main Code Form View -->
+    <record id="main_code_view_form" model="ir.ui.view">
+        <field name="name">main.code.view.form</field>
+        <field name="model">main.code</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="main_code_action" model="ir.actions.act_window">
+        <field name="name">Main Code Action</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">main.code</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a record!
+            </p>
+        </field>
+    </record>
+
+    <!-- Menuitem -->
+    <menuitem id="menu_fts_maincode_root" 
+            name="Main Code" 
+            parent="sale.menu_sale_config" 
+            action="main_code_action" 
+            sequence="10"/>
+</odoo>

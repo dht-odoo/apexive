@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Sale Order Report -->
+    <template id="report_saleorder_inherit" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//div[@t-field='doc.partner_id']" position="attributes">
+            <attribute name="class">d-none</attribute>
+        </xpath>
+
+        <xpath expr="//div[@name='expiration_date']" position="attributes">
+            <attribute name="class">d-none</attribute>
+        </xpath>
+
+        <xpath expr="//th[@name='th_discount']" position="attributes">
+            <attribute name="class">d-none</attribute>
+        </xpath>
+
+        <xpath expr="//div[@t-if='doc.user_id.name']" position="attributes">
+            <attribute name="class">d-none</attribute>
+        </xpath>
+
+        <xpath expr="//div[@id='informations']//div[@name='informations_date']" position="attributes">
+            <attribute name="class">d-none</attribute>
+        </xpath>
+
+        <xpath expr="//div[@name='informations_date']" position="before">
+            <div name="informations_customer">
+                <div class="row">
+                    <div class="col-6">
+                        <strong class="col-md-auto mx-1">Customer:</strong>
+                        <span t-field="doc.partner_id"/>
+                    </div>
+                    <div class="col-6">
+                        <div style="position: absolute; right: 20px;">
+                            <strong>Job Card:</strong>
+                            <span t-field="doc.job_card_id"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <strong t-if="doc.state in ['draft', 'sent']" class="col-md-auto mx-1">Quotation Date:</strong>
+                        <strong t-else="">Order Date:</strong>
+                        <span class="m-0 col-md-auto" t-field="doc.date_order" t-options='{"widget": "date"}'/>
+                    </div>
+                    <div class="col-6">
+                        <div style="position: absolute; right: 20px;">
+                            <strong>Salesperson:</strong>
+                            <span t-field="doc.user_id"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <strong t-if="doc.fleet_id.name" class="col-md-auto mx-1">Vehicle:</strong>
+                        <span class="m-0 col-md-auto" t-field="doc.fleet_id.model_id"/>
+                    </div>
+                    <div class="col-6">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <strong t-if="doc.license_plate" class="col-md-auto mx-1">License Plate:</strong>
+                        <span class="m-0 col-md-auto" t-field="doc.license_plate"/>
+                    </div>
+                    <div class="col-6">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <strong t-if="doc.chassis_number" class="col-md-auto mx-1">Chassis Number:</strong>
+                        <span t-field="doc.chassis_number"/>
+                    </div>
+                    <div class="col-6">
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+        <xpath expr="//th[@name='th_priceunit']" position="after">
+            <th name="th_discount" class="text-end">Discount Amt:</th>
+        </xpath>
+
+        <xpath expr="//td[@t-if='display_discount']" position="replace">
+            <td class="text-end">
+                <span t-field="line.discount_amt"/>
+            </td>
+        </xpath>
+
+        <xpath expr="//div[@name='total']" position="before">
+            <div id="discount" class="row">
+                    <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ml-auto ms-auto">
+                        <table class="table table-sm table-borderless" style="page-break-inside: avoid;">
+                            <tr class="border-black o_subtotal">
+                                <td><strong>Total Discount Amount: </strong></td>
+                            <td class="text-right col-1" >
+                                <span t-att-class="oe_subtotal_footer_separator" 
+                                    t-field="doc.total_discount_amt" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

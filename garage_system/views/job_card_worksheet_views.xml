@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Job card worksheet form view -->
+    <record id="job_card_worksheet_view_form" model="ir.ui.view">
+        <field name="name">job.card.worksheet.view.form</field>
+        <field name="model">job.card.worksheet</field>
+        <field name="arch" type="xml">
+            <form string="Work Sheet">
+                <header colspan="8">
+                    <button name="action_start_working" string="Start" type="object" states="draft" help="Start Working" />
+                    <button name="button_cancel" string="Cancel Order" type="object" states="draft,startworking" help="Cancel Order" />
+                    <button name="button_draft" string="Set Draft" type="object" states="cancel" help="Set to Draft"/>
+                    <button name="button_resume" string="Resume" type="object" states="pause" help="Resume Work Sheet"/>
+                    <button name="button_pause" string="Pending" type="object" states="startworking" help="Pause Work Sheet"/>
+                    <button name="action_done" string="Finished" type="object" states="startworking" help="Finish Order"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,startworking,done"/>
+                </header>
+                <sheet string="Work Sheet">
+                    <group>
+                        <group>
+                            <field name="name" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="client_id" readonly="True"/>
+                            <field name="job_card_id" readonly="True"/>
+                        </group>
+                        <group>
+                            <field name="mechanic_id" readonly="1"/>
+                            <field name="date" readonly="True"/>
+                            <field name="priority" widget="priority" readonly="True"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Service Products">
+                            <field name="product_parts_services_ids" attrs="{'readonly': [('state', 'in', ['done', 'cancel'])]}">
+                                <tree editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="description"/>
+                                    <field name="default_code"/>
+                                    <field name="is_service" force_save="1"/>
+                                    <field name="quantity"/>
+                                    <field name="uom_id"/>
+                                    <field name="product_uom_category_id" invisible="1"/>
+                                    <field name="delivered_quantity" invisible="1"/>
+                                    <field name="delivery_state" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Extra Consumable Products">
+                            <field name="consumable_product_parts_services_ids" attrs="{'readonly': [('state', 'in', ['done', 'cancel'])]}">
+                                <tree editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="description"/>
+                                    <field name="default_code"/>
+                                    <field name="is_service" readonly='True'/>
+                                    <field name="quantity"/>
+                                    <field name="uom_id"/>
+                                    <field name="product_uom_category_id" invisible="1"/>
+                                    <field name="delivered_quantity" invisible="1"/>
+                                    <field name="delivery_state" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Worklogs">
+                            <group>
+                                <group string="Planned Date">
+                                    <field name="date_planned" attrs="{'readonly': [('state', 'in', ['done', 'cancel'])]}"/>
+                                    <field name="date_planned_end" attrs="{'readonly': [('state', 'in', ['done', 'cancel'])]}"/>
+                                </group>
+                                <group string="Duration">
+                                    <field name="hour" widget="float_time" attrs="{'readonly': [('state', 'in', ['done', 'cancel'])]}"/>
+                                </group>
+                            </group>
+                            <group string="Actual Repairing Date">
+                                <group>
+                                    <field name="date_start" attrs="{'readonly': [('state', 'in', ['done', 'cancel'])]}"/>
+                                    <field name="date_finished" attrs="{'readonly': [('state', 'in', ['done', 'cancel'])]}"/>
+                                </group>
+                                <group>
+                                    <field name="delay" widget="float_time" string="Duration"/>
+                                    <!-- <field name="hours_worked"/> -->
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>                    
+            </form>
+        </field>
+    </record>        
+    
+    <!--Job card Worksheet tree view-->
+    <record id="job_card_worksheet_view_tree" model="ir.ui.view">
+        <field name="name">job.card.worksheet.view.tree</field>
+        <field name="model">job.card.worksheet</field>
+        <field name="priority">4</field>
+        <field name="arch" type="xml">
+            <tree string="Work Sheet">
+                <field name="name" string="Work Sheet"/>
+                <field name="job_card_id"/>
+                <field name="client_id"/>
+                <field name="date"/>
+                <field name="mechanic_id"/>
+                <field name="priority"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Job card worksheet search view-->
+    <record id="vfleet_worksheet_view_search" model="ir.ui.view">
+        <field name="name">fleet.worksheet.view.search</field>
+        <field name="model">job.card.worksheet</field>
+        <field name="arch" type="xml">
+            <search string="Search Job card Worksheet">
+                <field name="name" string="Worksheet" />
+                <field name="job_card_id"/>
+                <separator/>
+           </search>
+        </field>
+    </record>
+
+    <!-- Job card Worksheet Pivot View -->
+    <record id="fleet_worksheet_view_pivot" model="ir.ui.view">
+        <field name="name">fleet.worksheet.view.pivot</field>
+        <field name="model">job.card.worksheet</field>
+        <field name="arch" type="xml">
+            <pivot string="Job card Worksheet">
+                <field name="name" type="row"/>
+            </pivot>
+        </field>
+    </record>
+            
+    <!-- Window action for job card worksheet -->
+    <record model="ir.actions.act_window" id="job_card_worksheet_action">
+        <field name="name">Job Cards Worksheet Action</field>
+        <field name="res_model">job.card.worksheet</field>
+        <field name="binding_view_types">form</field>
+        <field name="view_mode">tree,form,pivot</field>
+        <field name="search_view_id" ref="view_fleet_worksheet_filter"/>
+        <field name="view_id" ref="view_job_card_worksheet_tree"/>
+    </record>
+
+    <!--Menuitems-->   
+    <menuitem name="Work Sheet" parent="garage_system.menu_job_card" id="menu_job_card_worksheet_submenu" sequence="2" action="job_card_worksheet_action" groups="garage_system.group_job_card_technician"/>    
+</odoo>

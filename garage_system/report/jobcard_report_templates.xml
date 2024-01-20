@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="report_job_card">
+		<t t-call="web.html_container">
+			<t t-call="web.basic_layout">
+				<t t-foreach="docs" t-as="o">
+					<div class="page" style="background-size:242mm 280mm; width:242mm; height:280mm;">
+						<!-- Header	 -->
+						<div class="oe_structure">
+							<div class="container-xxl">
+								<div class="row" style="width: 937px;">
+									<div class="col-4">
+										<t t-foreach="docs" t-as="line">
+											<t t-if="line">
+												<div class="row black" style="padding-top: 150px; padding-left: 133px; font-size: 13px; font-weight: 900;">
+													<tr>
+														<td>
+										                    <strong><span style="font-size: 18px; font-weight: 900;" t-esc="line.name"/></strong>
+										                </td><br/><br/><br/>
+														<td>
+										                    <strong><span t-esc="line.name"/></strong>
+										                </td><br/>
+														<td>
+										                    <strong><span t-esc="line.contact_name"/></strong>
+										                </td><br/>
+										                <td>
+										                    <strong><span t-esc="line.client_id.street"/></strong>
+										                </td><br/>
+										                <td>
+										                    <strong><span t-esc="line.phone"/></strong>
+										                </td><br/>
+										                  <td>
+										                    <strong><span></span></strong>
+										                </td><br/>
+										                <td>
+										                    <strong><span t-esc="line.client_id.last_visit_date"/></strong>
+										                </td>
+									                </tr>
+									            </div>
+									        </t>	
+						                </t>
+						            </div>
+						            <div class="col-2" style="padding-left: 60px; padding-top: 200px;  font-size: 13px; padding-right: 0px; font-weight: 900;">
+						            	<tr>
+							        		<td>
+					                    		<strong><t t-if="line.fts_payment_type" t-esc="line.fts_payment_type.upper()"/></strong>
+					                    	</td>
+					                    	<br/><p></p><br/><p></p><br/>
+						                    <td>
+					                    		<strong><t t-esc="line.mobile"/></strong>
+					                    	</td>
+					                    	<td>
+					                    		<strong><t t-esc="line.client_id.last_services_jobcard_id"/></strong>
+					                    	</td>
+						                </tr>
+							        </div>
+				                	<t t-set="docs" t-value="line"/>
+					                <div class="col-4">
+										<t t-if="line">
+											<t t-foreach="line" t-as="vehicle">
+												<table class="table table-borderless">
+													<div class="black" style="padding-top: 150px;">
+														<td style="padding-left: 150px; padding-right: 0px; font-weight: 900;">
+															<strong><t t-esc="vehicle.user_id.name"/></strong>
+															<br/>
+														</td>
+														<tr>
+															<td style="font-size: 13px; padding-left: 185px; padding-right: 0px; font-weight: 900;">
+																<strong><t t-esc="vehicle.receipt_date"  t-options='{"widget": "date","format": "dd-MM-yyyy"}'/></strong>
+																<br/>
+																<strong><t t-esc="vehicle.date_closed"  t-options='{"widget": "date","format": "dd-MM-yyyy"}'/></strong>
+																<br/>
+																<strong><t t-esc="vehicle.fleet_id.name"/></strong>
+																<br/>
+																<strong><t t-esc="vehicle.registration_number"/></strong>
+																<br/>
+																<strong><t t-esc="vehicle.last_odometer"/></strong>
+																<br/>
+																<strong><t t-esc="vehicle.chassis_number"/></strong>
+											                </td>
+										                </tr>
+										            </div>
+										        </table>
+									        </t>
+						                </t>
+							        </div>
+							        <div class="col-2" style="padding-left: 98px; padding-top: 189px; font-size: 13px; padding-right: 0px; font-weight: 900;">
+							        	<td>
+					                    	<p>
+					                    		<strong><t t-esc="vehicle.fleet_id.model_year"/></strong>
+					                    	</p>
+				                    	</td>
+				                    	<br/><span></span>
+							        	<tr>
+						                    <td>
+						                    	<p>
+						                    		<strong><t t-esc="vehicle.fuel_type"/></strong>
+						                    	</p>
+					                    	</td>
+						                </tr>
+							        </div>
+							    </div>
+							</div>
+							<!-- Boady -->
+							<table class="table-borderless text-uppercase" style="position: absolute; top: 450px; font-weight: 900; " name="Workshop">
+								<t t-foreach="docs.product_parts_services_ids" t-as="line">
+									<t t-if="line">
+										<t t-foreach="line" t-as="service">
+											<div style="height: 20px;">
+												<tr>
+													<td class="pt-0 pb-0" style="width: 350px; font-size: 17px; padding-left: 100px;">
+														<span>
+															<t t-esc="service.product_id.name"/>-<t style="width: 192px;"  t-esc="service.description"/>-<t t-esc="service.quantity"/>
+														</span>
+													</td>
+												</tr>
+											</div>	
+										</t>
+									</t>
+								</t>
+							</table>
+						</div>
+					</div>
+				</t>
+			</t>
+		</t>
+ 	</template>
+</odoo>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_job_card,access.job.card,model_job_card,,1,1,1,1
+access_product_parts_services,access.product.parts.services,model_product_parts_services,,1,1,1,1
+access_job_card_worksheet,access.job.card.worksheet,model_job_card_worksheet,,1,1,1,1
+access_main_code,access.main.code,model_main_code,,1,1,1,1

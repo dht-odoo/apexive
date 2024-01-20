@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherited purchase form view -->
+    <record id="purchase_order_view_form" model="ir.ui.view">
+        <field name="name">purchase.order.view.form.inherit.garage_system</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <header>
+                <button name="action_create_invoice_and_picking" string="Create Invoice and Picking" attrs="{'invisible': [('incoming_picking_count', '!=', 0)]}" type="object" class="oe_highlight"/>
+            </header>
+            <data>
+                <sheet position="inside">
+                    <field name="incoming_picking_count" invisible="1"/>
+                </sheet>
+                <field name="partner_id" position="after">
+                    <field name="job_card_id" groups="garage_system.group_job_card_technician"/>
+                    <field name="job_card_id" invisible="1"/>
+                </field>
+            </data>
+        </field>
+    </record>
+
+    <!-- Inherits purchase tree view -->
+    <record id="purchase_order_view_tree" model="ir.ui.view">
+        <field name="name">purchase.order.view.tree.garage_system</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="job_card_id" groups="garage_system.group_job_card_technician"/>
+                <field name="job_card_id" invisible="1"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="purchase_order_action" model="ir.actions.act_window">
+        <field name="name">Purchase Order Action</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.order</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="domain">[('job_card_id', '!=', False)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a New record!
+            </p>
+        </field>
+    </record>
+
+    <!-- Menuitem -->
+    <menuitem id="menu_purchase_order" 
+            name="Purchase" 
+            parent="garage_system.menu_base_job_card" 
+            sequence="30" groups="garage_system.group_fleet_sales_user"/>
+    <menuitem name="Purchase Order" 
+            parent="menu_purchase_order"
+            id="menu_purchase_order_submenu"
+            sequence="1"
+            action="purchase_order_action" groups="garage_system.group_fleet_sales_user"/>
+</odoo>
