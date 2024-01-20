@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    # Multi-company rules for Reminder Documents, Document Types, and Document Tags.
+    <data noupdate="0">
+        <record id="reminder_comp_rule" model="ir.rule">
+            <field name="name">reminder Document multi company rule</field>
+            <field name="model_id" ref="model_reminder_document" />
+            <field eval="True" name="global" />
+            <field name="domain_force">['|', ('company_id','=',False), ('company_id.id', 'in', user.company_ids.ids)]</field>
+        </record>
+        <record id="reminder_type_comp_rule" model="ir.rule">
+            <field name="name">reminder Document Type multi company rule</field>
+            <field name="model_id" ref="model_reminder_document_type" />
+            <field eval="True" name="global" />
+            <field name="domain_force">['|', ('company_id','=',False), ('company_id.id', 'in', user.company_ids.ids)]</field>
+        </record>
+        <record id="reminder_tag_comp_rule" model="ir.rule">
+            <field name="name">reminder Document Tag multi company rule</field>
+            <field name="model_id" ref="model_reminder_document_tag" />
+            <field eval="True" name="global" />
+            <field name="domain_force">['|', ('company_id','=',False), ('company_id.id', 'in', user.company_ids.ids)]</field>
+        </record>
+    </data>
+
+
+    <!-- Module category for Document Reminder -->
+    <record model="ir.module.category" id="reminder_documents_reminder_user">
+        <field name="name">Document Reminder</field>
+        <field name="description">Remind you manage your Document Upto Date.</field>
+        <field name="sequence">3</field>
+    </record>
+
+    <!-- User groups for Document Reminder module -->
+    <record id="group_document_reminder_maneger" model="res.groups">
+        <field name="name">reminder User</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="reminder_documents_reminder_user"/>
+    </record>
+
+    <record id="group_document_reminder_dashboard" model="res.groups">
+        <field name="name">reminder Dashboard</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_document_reminder_apps" model="res.groups">
+        <field name="name">reminder Apps</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_document_reminder_discuss" model="res.groups">
+        <field name="name">reminder Discuss</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_document_inner_dashboard" model="res.groups">
+        <field name="name">reminder Inner Dashboard</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+</odoo>

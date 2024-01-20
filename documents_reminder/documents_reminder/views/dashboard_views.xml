@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Define a client action for the document dashboard -->
+    <record id="document_dashboard" model="ir.actions.client">
+        <field name="name">Dashboard</field>
+        <field name="tag">document_dashboard</field>
+    </record>
+
+    <!-- Create a menu items for the dashboard, linked to the client action -->
+    <menuitem id="menu_dashboard" name="Dashboard" parent="documents_reminder.menu_reminder_document_reminders" action="documents_reminder.document_dashboard" sequence="1" groups="group_document_inner_dashboard"/>
+    
+    <!-- Adding groups to the menu to handle visibility of it.  -->
+    <menuitem id="spreadsheet_dashboard.spreadsheet_dashboard_menu_root" name="Dashboard" groups="group_document_reminder_dashboard"/>
+    <menuitem id="base.menu_management" name="Apps" groups="group_document_reminder_apps"/>
+    <menuitem name="Discuss" id="mail.menu_root_discuss" groups="group_document_reminder_discuss"/>
+
+    <!-- Associate the 'Discuss' menu item with a specific group using an additional record -->
+    <record model='ir.ui.menu' id='mail.menu_root_discuss'>
+        <field name="groups_id" eval="[(6,0,[ref('documents_reminder.group_document_reminder_discuss')])]"/>
+    </record>
+
+</odoo>

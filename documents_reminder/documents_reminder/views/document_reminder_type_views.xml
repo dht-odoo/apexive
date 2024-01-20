@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Tree view of document type. -->
+    <record id="reminder_document_type_view_tree" model="ir.ui.view">
+        <field name="name">reminder.document.type.view.tree</field>
+        <field name="model">reminder.document.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="reminder_document_type_notify_ids" widget="many2many_tags"/>
+            </tree>
+        </field> 
+    </record>
+
+    <!-- Form view of document type. -->
+    <record id="reminder_document_type_view_form" model="ir.ui.view">
+        <field name="name">reminder.document.type.view.form</field>
+        <field name="model">reminder.document.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="image" nolabel="1" widget="image" class="oe_avatar"/>
+                    <group>
+                        <group>
+                            <field name="name" required="1"/>
+                            <field name="company_id" readonly="1" force_save="1"/>
+                            <field name="reminder_document_type_notify_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action for document type. -->
+    <record id="reminder_document_type_action" model="ir.actions.act_window">
+        <field name="name">Document Type Action</field>
+        <field name="res_model">reminder.document.type</field>
+        <field name="view_mode">tree,form,kanban</field>
+    </record>
+
+    <menuitem id="menu_reminder_document_reminders_document_type" name="Document Type" action="reminder_document_type_action" parent="documents_reminder.menu_reminder_document_reminders"/>
+
+</odoo>

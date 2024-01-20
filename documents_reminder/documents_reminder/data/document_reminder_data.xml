@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Scheduler for sending reminder email for expiring documents -->
+    <record id="reminder_documents_email_reminder_cron" model="ir.cron">
+        <field name="name">Documents reminder Email Reminder Cron</field>
+        <field name="model_id" ref="documents_reminder.model_reminder_document"/>
+        <field name="state">code</field>
+        <field name="code">model.email_reminder()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+    <!-- Email template for reminder of expiring documents to documents owners -->
+    <record id="mail_template_reminder_documents_email_reminder" model="mail.template">
+        <field name="name">Documents reminder Email Reminder email</field>
+        <field name="model_id" ref="documents_reminder.model_reminder_document"/>
+        <field name="subject">Document - {{object.reminder_document_type_id.name}} Expired On - {{object.expiry_date}}</field>
+        <field name="email_from">{{ (object.partner_id.company_id.email or user.email_formatted) }}</field>
+        <field name="email_to">{{ object.partner_id.email if object.partner_id.email else False }}</field>
+        <field name="auto_delete" eval="False"/>
+        <field name="description">Sent document expiry email</field>
+        <field name="body_html" type="html">
+            <div>
+                Dear <t t-out="object.partner_id.name or ''"/>,<br/><br/>
+                Your document <t t-out="object.reminder_document_type_id.name or ''"/><br/>
+                is expiring on <t t-out="object.expiry_date or ''"/>. <br/>
+                <br/>Best Regards,<br/><br/>
+            </div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <!-- Email template for reminder of expiring documents to responsible parties of those documents -->
+    <record id="mail_template_reminder_documents_email_reminder_responsible" model="mail.template">
+        <field name="name">Documents reminder Email Reminder email to Responsible</field>
+        <field name="model_id" ref="documents_reminder.model_reminder_document"/>
+        <field name="subject">Document - {{object.reminder_document_type_id.name}} Expired On - {{object.expiry_date}} for {{object.partner_id.responsible_partner_id.name}}</field>
+        <field name="email_from">{{ user.email_formatted }}</field>
+        <field name="email_to">{{ object.partner_id.responsible_partner_id.email if object.partner_id.responsible_partner_id.email else False }}</field>
+        <field name="auto_delete" eval="False"/>
+        <field name="description">Sent document expiry email responsible</field>
+        <field name="body_html" type="html">
+            <div>
+                Dear <t t-out="object.partner_id.responsible_partner_id.name or ''"/>,<br/><br/>
+                <t t-out="object.partner_id.name or ''"/>'s document <t t-out="object.reminder_document_type_id.name or ''"/><br/>
+                is expiring on <t t-out="object.expiry_date or ''"/>. <br/>
+                <br/>Best Regards,<br/><br/>
+            </div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Form view for document tags. -->
+    <record id="reminder_document_tag_view_tree" model="ir.ui.view">
+        <field name="name">reminder.document.tag.view.tree</field>
+        <field name="model">reminder.document.tag</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name" required="1"/>
+                <field name="company_id" readonly="1" force_save="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="reminder_document_tag_action" model="ir.actions.act_window">
+        <field name="name">Documeny Rag Action</field>
+        <field name="res_model">reminder.document.tag</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_reminder_document_reminders_document_tag" name="Tag" action="reminder_document_tag_action" parent="documents_reminder.menu_reminder_document_reminders"/>
+
+
+</odoo>

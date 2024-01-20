@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <!-- ... HTML structure for DocumentDashboard ... -->
+    <t t-name="DocumentDashboard">
+        <div class="od_dashboard">
+            <div class="px-content" style="padding-bottom: 217.391px;">
+                <div class="page-header">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h1><i class="fa fa-pie-chart"></i> Dashboard <span class="text-muted font-weight-light"><t t-esc="widget.company_name"/></span></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="row o_document_dashboard">
+                    <div class="row o_document_list_container">
+                    </div>
+                    <div class="row o_document_calendar_container">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+    <!-- ... HTML structure for DashboardList ... -->
+    <t t-name="DashboardList">
+        <div class="col-md-6">
+            <div class="panel">
+                <div class="table-responsive">
+                    <table class="table table-striped valign-middle">
+                        <thead>
+                            <tr>
+                                <th>Document Type</th>
+                                <th class="text-xs-right" width="20%">Expired/Past Due</th>
+                                <th class="text-xs-right" width="15%">30 Days</th>
+                                <th class="text-xs-right" width="15%">7 Days</th>
+                                <th class="text-xs-right" width="15%">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="widget.document_data" t-as="document">
+                                <td><t t-esc="document.document_type"/></td>
+                                <td><t t-if="document['Expired/Past Due']" t-esc="document['Expired/Past Due']"/><t t-else="">0</t></td>
+                                <td><t t-if="document['30 Days']" t-esc="document['30 Days']"/><t t-else="">0</t></td>
+                                <td><t t-if="document['7 Days']" t-esc="document['7 Days']"/><t t-else="">0</t></td>
+                                <td><t t-if="document['Total']" t-esc="document['Total']"/><t t-else="">0</t></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 pa-0">
+            <div class="col-md-6 float-start px-2">
+                <div class="box bg-danger darken">
+                    <div class="box-cell px-3 py-1">
+                        <div class="font-weight-semibold font-size-18">Expired/Past Due</div>
+                        <div class="font-weight-bold font-size-28"><t t-esc="widget.sections_data['Expired/Past Due']"/></div>
+                        <i class="box-bg-icon float-end middle right font-size-52 fa fa-flag"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 float-start px-2">
+                <div class="box bg-success darken">
+                    <div class="box-cell px-3 py-1">
+                        <div class="font-weight-semibold font-size-18">Total</div>
+                        <div class="font-weight-bold font-size-28"><t t-esc="widget.sections_data['Total']"/></div>
+                        <i class="box-bg-icon float-end middle right font-size-52 fa fa-copy"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 float-start px-2">
+                <div class="box bg-warning darken">
+                    <div class="box-cell px-3 py-1">
+                        <div class="font-weight-semibold font-size-18">7 Days</div>
+                        <div class="font-weight-bold font-size-28"><t t-esc="widget.sections_data['7 Days']"/></div>
+                        <i class="box-bg-icon float-end middle right font-size-52 ion-ios-bell"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 float-start px-2">
+                <div class="box bg-info darken">
+                    <div class="box-cell px-3 py-1">
+                        <div class="font-weight-semibold font-size-18">30 days</div>
+                        <div class="font-weight-bold font-size-28"><t t-esc="widget.sections_data['30 Days']"/></div>
+                        <i class="box-bg-icon float-end middle right font-size-52 fa fa-bell"></i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </t>
+    <!-- ... HTML structure for DasboardCompanyStats ... -->
+    <t t-name="DasboardCompanyStats">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel box">
+                        <div class="box-row">
+                            <div class="box-cell px-2 py-1 bg-black text-xs-center font-size-14 font-weight-semibold">
+                                <i class="fa fa-file pe-2"></i>Total Documents
+                            </div>
+                        </div>
+                        <div class="box-row">
+                            <div class="box-cell py-2">
+                                <div class="easy-pie-chart" data-suffix="%" id="easy-pie-chart-1" t-att-data-percent="widget.company_data.documents_percentage" t-att-data-max-value="widget.company_data.total_allowed_documents"><span class="font-size-14 font-weight-light"><t t-esc="widget.company_data.documents_percentage"/></span></div>
+                            </div>
+                        </div>
+                        <div class="box-container valign-middle text-xs-center">
+                            <div class="box-cell py-3 b-r-1">
+                                <div class="font-size-16"><t t-esc="widget.company_data.total_documents"/> / <t t-esc="widget.company_data.total_allowed_documents"/> Documents</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="panel box">
+                        <div class="box-row">
+                            <div class="box-cell px-2 py-1 bg-black text-xs-center font-size-14 font-weight-semibold">
+                                <i class="fa fa-book pe-2"></i>Contacts
+                            </div>
+                        </div>
+                        <div class="box-row">
+                            <div class="box-cell py-3">
+                                <div class="easy-pie-chart" data-suffix="%" id="easy-pie-chart-2" t-att-data-percent="widget.company_data.partners_percentage" t-att-data-max-value="widget.company_data.total_allowed_par"><span class="font-size-14 font-weight-light"><t t-esc="widget.company_data.partners_percentage"/></span></div>
+                            </div>
+                        </div>
+                        <div class="box-container valign-middle text-xs-center">
+                            <div class="box-cell py-2 b-r-1">
+                                <div class="font-size-16"><t t-esc="widget.company_data.total_partners"/> / <t t-esc="widget.company_data.total_allowed_partners"/> Contacts</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

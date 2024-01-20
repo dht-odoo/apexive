@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Tree view for document reminder -->
+    <record id="reminder_document_view_tree" model="ir.ui.view">
+        <field name="name">reminder.document.view.tree</field>
+        <field name="model">reminder.document</field>
+        <field name="arch" type="xml">
+            <tree multi_edit="1">
+                <field name="reminder_document_type_id" optional="show"/>
+                <field name="document_number" optional="show"/>
+                <field name="description" optional="show"/>
+                <field name="partner_id" optional="show"/>
+                <field name="expired_days" optional="hide"/>
+                <field name="expiry_date" optional="show"/>
+                <field name="next_reminder_date" optional="hide"/>
+                <field name="last_reminder_date" readonly="1" optional="hide"/>
+                <field name="notify" optional="hide"/>
+                <field name="reminder_document_notify_ids" widget="many2many_tags" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Kanban view for document reminder -->
+    <record id="document_type_view_kanban" model="ir.ui.view">
+        <field name="name">reminder.document.view.kanban</field>
+        <field name="model">reminder.document</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="partner_id"/>
+                <field name="reminder_document_type_id"/>
+                <field name="description"/>
+                <field name="expiry_date"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <div class="row"> 
+                                    <div class="col-3">
+                                        <img t-att-src="kanban_image('reminder.document.type', 'image', record.reminder_document_type_id.raw_value)" class="o_image_64_contain"/>
+                                    </div>
+                                    <div class="col-5">
+                                        <div>
+                                            <strong><field name="partner_id"/></strong>
+                                        </div>
+                                        <div>
+                                            <field name="reminder_document_type_id"/>
+                                        </div>
+                                        <div>
+                                            <field name="description"/>
+                                        </div>
+                                        <div>
+                                            <strong><field name="expiry_date"/></strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Calendar view for document reminder -->
+    <record id="document_reminder_view_calendar" model="ir.ui.view">
+        <field name="name">reminder.document.view.calendar</field>
+        <field name="model">reminder.document</field>
+        <field eval="2" name="priority"/>
+        <field name="arch" type="xml">
+            <calendar string="Document Reminders" date_start="expiry_date"  mode="month" color="partner_id" hide_time="true" event_limit="5" quick_add="False">
+                <field name="partner_id" filters="1"/>
+                <field name="reminder_document_type_id"/>
+                <field name="description"/>
+                <field name="company_id"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Graph view for document reminder -->
+    <record id="reminder_document_type_view_graph" model="ir.ui.view">
+        <field name="name">reminder.document.view.graph</field>
+        <field name="model">reminder.document</field>
+        <field name="arch" type="xml">
+            <graph string="Documents">
+                <field name="reminder_document_type_id"/>
+            </graph>
+        </field> 
+    </record>
+
+    <!-- Pivot view for document reminder -->
+    <record id="reminder_document_view_pivot" model="ir.ui.view">
+        <field name="name">reminder.document.view.pivot</field>
+        <field name="model">reminder.document</field>
+        <field name="arch" type="xml">
+            <pivot string="Documents">
+                <field name="reminder_document_type_id" type="row"/>
+                <field name="partner_id" type="measure"/>
+                <field name="expiry_date"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Form view for document reminder -->
+    <record id="reminder_document_view_form" model="ir.ui.view">
+        <field name="name">reminder.document.view.form</field>
+        <field name="model">reminder.document</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="partner_id" required="1"/>
+                            <field name="company_id" readonly="1" force_save="1"/>
+                            <field name="document_number" optional="show"/>
+                            <field name="reminder_document_type_id"/>
+                            <field name="description" />
+                            <field name="expired_days"/>
+                            <field name="expiry_date"/>
+                            <field name="reminder_document_tag_ids"
+                                   widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="document_one"/>
+                            <field name="document_two"/>
+                            <field name="next_reminder_date"/>
+                            <field name="last_reminder_date" readonly="1"/>
+                            <field name="notify"/>
+                            <!-- <field name="company_id" readonly="True"/> -->
+                            <field name="reminder_document_notify_ids" widget="many2many_tags" force_save="1"/>
+                            <field name="document_link"/>
+                            <field name="copy_link" widget="CopyClipboardText"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search view for document reminder -->
+    <record id="partner_document_view_search" model="ir.ui.view">
+        <field name="name">reminder.document.view.search</field>
+        <field name="model">reminder.document</field>
+        <field name="arch" type="xml">
+            <search string="Partner">
+                <field name="partner_id"/>
+                <separator/>
+                <filter string="Forty Days" name="expiry_date" domain="[('expired_days', '&gt;=', 45 )] "/>
+                <filter string="Thirty Days" name="expiry_date" domain="[('expired_days', '&gt;=', 30 )] "/>
+                <filter string="Fifteen Days" name="expiry_date" domain="[('expired_days', '&gt;=', 15 )] "/>
+                <filter string="Five Days" name="expiry_date" domain="[('expired_days', '&gt;=', 10 )] "/>
+                <separator/>                        
+                <group expand="1" string="Group By">
+                    <filter string="Partner" name="group_partner_id" context="{'group_by':'partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action for document reminder -->
+    <record id="reminder_document_action" model="ir.actions.act_window">
+        <field name="name">Reminder Document Action</field>
+        <field name="res_model">reminder.document</field>
+        <field name="view_mode">tree,form,kanban,calendar,graph,pivot</field>
+        <field name="search_view_id" ref="partner_document_search"/>
+        <field name="context">{'search_default_group_partner_id' : 1}</field>
+    </record>
+
+    <menuitem id="menu_reminder_document_reminders" name="Document Reminders" groups="documents_reminder.group_document_reminder_maneger"/>
+    <menuitem id="menu_reminder_document_reminders_document" name="Document" action="reminder_document_action" parent="documents_reminder.menu_reminder_document_reminders"/>
+
+</odoo>

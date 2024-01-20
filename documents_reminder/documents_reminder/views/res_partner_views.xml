@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Inherited partner form view -->
+    <record id="res_partner_view_form" model="ir.ui.view">
+        <field name="name">res.partner.view.form.inherit.documents_reminder</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <page name="contact_addresses" position="after">
+                <page string="Documents" name="contact_documents">
+                    <field name="reminder_document_ids">
+                        <tree editable="bottom" create="1" delete="1">
+                            <field name="reminder_document_type_id" optional="show"/>
+                            <field name="document_number" optional="show"/>
+                            <field name="description" optional="show"/>
+                            <field name="document_link" optional="hide"/>
+                            <field name="copy_link" optional="hide"/>
+                            <field name="expired_days" optional="show"/>
+                            <field name="expiry_date" optional="show"/>
+                            <field name="next_reminder_date" optional="hide"/>
+                            <field name="last_reminder_date" readonly="1" optional="hide"/>
+                            <field name="notify" force_save="1"
+                                   attrs="{'readonly': [('parent.is_notify_documents', '!=', True)]}" optional="hide"/>
+                            <button class="oe_stat_button" name="action_open_document_form" type="object" icon="fa-share" />
+                        </tree>
+                        <form>
+                            <group>
+                                <group>
+                                    <field name="partner_id" invisible="1"/>
+                                    <field name="company_id" readonly="1" force_save="1"/>
+                                    <field name="reminder_document_type_id" required="1"/>
+                                    <field name="document_number" optional="show"/>
+                                    <field name="description"/>
+                                    <field name="expired_days"/>
+                                    <field name="expiry_date" required="1"/>
+                                    <field name="reminder_document_tag_ids"
+                                        widget="many2many_tags"/>
+                                </group>
+                                <group>
+                                    <field name="document_one"/>
+                                    <field name="document_two"/>
+                                    <field name="next_reminder_date"/>
+                                    <field name="document_link"/>
+                                    <field name="copy_link"/>
+                                    <field name="last_reminder_date" readonly="1"/>
+                                    <field name="notify" force_save="1"
+                                        attrs="{'readonly': [('parent.is_notify_documents', '!=', True)]}"/>
+                                    <field name="reminder_document_notify_ids" widget="many2many_tags"/>
+                                </group>
+                            </group>
+                        </form>
+                    </field>
+                </page>
+            </page>
+            <field name="vat" position="after">
+                <field name="responsible_partner_id"/>
+                <field name="is_notify_documents"/>
+                <field name="company_id" force_save="1"/>
+            </field>
+            <page name="sales_purchases" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </page>
+        </field>
+    </record>
+
+</odoo>

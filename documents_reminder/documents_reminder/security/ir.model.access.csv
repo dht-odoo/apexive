@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+documents_reminder.access_reminder_document_tag,access_reminder_document_tag,documents_reminder.model_reminder_document_tag,base.group_user,1,1,1,1
+documents_reminder.access_reminder_document,access_reminder_document,documents_reminder.model_reminder_document,base.group_user,1,1,1,1
+documents_reminder.access_reminder_document_type,access_reminder_document_type,documents_reminder.model_reminder_document_type,base.group_user,1,1,1,1
+documents_reminder.access_reminder_document_type_notify,access_reminder_document_type_notify,documents_reminder.model_reminder_document_type_notify,base.group_user,1,1,1,1
