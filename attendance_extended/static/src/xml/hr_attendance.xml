@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+	<t t-extend="HrAttendanceMyMainMenu">
+		<t t-jquery="*[t-esc='widget.employee.name']" t-operation="after">
+			<t t-if="widget.projects and widget.projects.project_ids">
+				<h3 name="project_select" class="ml32 row">
+					<!-- <t t-set="checked_in" t-value="widget.employee_state=='checked_in'"/> -->
+					<label for="projectSelect" class="col-5 o_light_label">Project:</label>
+					<select class="col-7" name="project_id" id="projectSelect" t-att-disabled="checked_in ? 'disabled' : null">
+						<option selected="selected" value=""></option>
+						<t t-foreach="widget.projects.project_ids" t-as="pro">
+							<t t-if="widget.projects.current_project_id.id == pro.id">
+								<option selected="selected" t-att-value="pro.id"><t t-out="pro.name" /></option>
+							</t>
+							<t t-else="">
+								<option t-att-value="pro.id"><t t-out="pro.name" /></option>
+							</t>
+						</t>
+					</select>
+				</h3>
+				<h3 name="project_task_select" class="ml32 row">
+					<label for="projectTaskSelect" class="col-5 o_light_label">Task:</label>
+					<select class="col-7" name="project_task_id" id="projectTaskSelect" t-att-disabled="checked_in ? 'disabled' : null">
+						<option selected="selected" value=""></option>
+						<t t-foreach="widget.projects.project_task_ids" t-as="task">
+							<t t-if="widget.projects.current_project_task_id.id == task.id">
+								<option selected="selected" t-att-value="task.id"><t t-out="task.name" /></option>
+							</t>
+							<t t-elif="widget.projects.current_project_id.id == task.project_id">
+								<option t-att-value="task.id"><t t-out="task.name" /></option>
+							</t>
+						</t>
+					</select>
+				</h3>
+				<h3 name="attend_description" class="ml32 row">
+					<label for="attend_description" class="col-5 o_light_label">Description:</label>
+					<t t-if="widget.projects.current_description != false">
+						<textarea id="attend_description" class="col-7" name="attend_description"><t t-esc="widget.projects.current_description" /></textarea>
+					</t>
+					<t t-else="">
+						<textarea id="attend_description" class="col-7" name="attend_description" />
+					</t>
+				</h3>
+			</t>
+		</t>
+	</t>
+</templates>
